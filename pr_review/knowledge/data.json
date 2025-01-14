@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "a1f3fa0be2e9b1af3374f2b29851ce6df8519561",
+    "filename": "browser_use/controller/service.py",
+    "status": "modified",
+    "additions": 12,
+    "deletions": 2,
+    "changes": 14,
+    "blob_url": "https://github.com/browser-use/browser-use/blob/df393a6be7f95b791566dd40f9bd7bfd1a15c4a3/browser_use%2Fcontroller%2Fservice.py",
+    "raw_url": "https://github.com/browser-use/browser-use/raw/df393a6be7f95b791566dd40f9bd7bfd1a15c4a3/browser_use%2Fcontroller%2Fservice.py",
+    "contents_url": "https://api.github.com/repos/browser-use/browser-use/contents/browser_use%2Fcontroller%2Fservice.py?ref=df393a6be7f95b791566dd40f9bd7bfd1a15c4a3",
+    "patch": "@@ -1,5 +1,6 @@\n import asyncio\n import logging\n+import os\n \n from main_content_extractor import MainContentExtractor\n from playwright.async_api import Page\n@@ -124,12 +125,18 @@ async def input_text(params: InputTextAction, browser: BrowserContext):\n \t\t\t\t)\n \n \t\t\telement_node = state.selector_map[params.index]\n-\t\t\tawait browser._input_text_element_node(element_node, params.text)\n-\t\t\tmsg = f'⌨️  Input \"{params.text}\" into index {params.index}'\n+\n+\t\t\tinput_text_to_use = params.text\n+\t\t\tif self.is_all_caps_or_underscore(input_text_to_use):\n+\t\t\t\tinput_text_to_use = os.getenv(input_text_to_use, input_text_to_use)\n+\n+\t\t\tawait browser._input_text_element_node(element_node, input_text_to_use)\n+\t\t\tmsg = f'⌨️  Input \"{input_text_to_use}\" into index {params.index}'\n \t\t\tlogger.info(msg)\n \t\t\tlogger.debug(f'Element xpath: {element_node.xpath}')\n \t\t\treturn ActionResult(extracted_content=msg, include_in_memory=True)\n \n+\n \t\t# Tab Management Actions\n \t\t@self.registry.action('Switch tab', param_model=SwitchTabAction, requires_browser=True)\n \t\tasync def switch_tab(params: SwitchTabAction, browser: BrowserContext):\n@@ -531,3 +538,6 @@ async def act(self, action: ActionModel, browser_context: BrowserContext) -> Act\n \t\t\treturn ActionResult()\n \t\texcept Exception as e:\n \t\t\traise e\n+\n+\tdef is_all_caps_or_underscore(self, s: str) -> bool:\n+\t\treturn all(c.isupper() or c == '_' for c in s)\n\\ No newline at end of file"
+  }
+]
