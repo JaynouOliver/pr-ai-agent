@@ -1,29 +1,9 @@
 from github_service import fetch_pr_data
 from crewai import Agent, Task, Crew
 from crewai_tools import FileReadTool
-from pydantic import BaseModel
-from typing import List, Dict, Optional, Any
+from typing import Dict
 import json
-
-# Pydantic models for API and analysis
-class Issue(BaseModel):
-    type: str
-    line: int
-    description: str
-    suggestion: str
-
-class File(BaseModel):
-    name: str
-    issues: List[Issue]
-
-class Summary(BaseModel):
-    total_files: int
-    total_issues: int
-    critical_issues: int
-
-class AnalysisResult(BaseModel):
-    files: List[File]
-    summary: Summary
+from models import AnalysisResult
 
 def process_github_pr(api_request):
     output_file = fetch_pr_data(api_request)
@@ -82,14 +62,14 @@ def process_and_analyze(api_request):
     except Exception as e:
         raise Exception(f"Error analyzing PR: {str(e)}")
 
-if __name__ == "__main__":
-    api_request = {
-        "repo_url": "https://github.com/fossasia/eventyay-video",
-        "pr_number": 304
-    }
+# if __name__ == "__main__":
+#     api_request = {
+#         "repo_url": "https://github.com/fossasia/eventyay-video",
+#         "pr_number": 304
+#     }
     
-    try:
-        result = process_and_analyze(api_request)
-        print(result)  # This will now print nicely formatted JSON
-    except Exception as e:
-        print("Error:", e)
+#     try:
+#         result = process_and_analyze(api_request)
+#         print(result)  # This will now print nicely formatted JSON
+#     except Exception as e:
+#         print("Error:", e)
