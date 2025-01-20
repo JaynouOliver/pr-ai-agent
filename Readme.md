@@ -1,3 +1,8 @@
+Architecture 
+
+![Untitled-2025-01-21-0215](https://github.com/user-attachments/assets/331de60a-d920-4ac7-bc27-1bcc5c0f5aa7)
+
+
 Project setup instructions
 
 creat venv with python 3.10
@@ -38,3 +43,5 @@ http://localhost:8000/results/508ae882-027c-4812-a905-020f5b8bf27a
 
 Example response - 
 {"task_id":"201c58f9-599b-42ef-a798-52caa0b4d1ea","result":{"files":[{"name":"merged--generated--merge-conflict","issues":[{"type":"Code Quality","line":0,"description":"Presence of auto-generated code conflicting with custom code.","suggestion":"Review and resolve the merge conflict manually to ensure all necessary functionalities are intact."},{"type":"Documentation Completeness","line":0,"description":"Lack of inline comments and documentation for complex logic.","suggestion":"Include comments explaining the purpose and usage of critical sections of the code."}]}],"summary":{"total_files":1,"total_issues":2,"critical_issues":1}},"error":null}
+
+
