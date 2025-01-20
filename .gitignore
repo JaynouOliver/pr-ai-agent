@@ -1,0 +1,5 @@
+venv/
+pr_review/.env
+pr_review/__pycache__
+pr_review/dump.rdb
+pr_review/knowledge/

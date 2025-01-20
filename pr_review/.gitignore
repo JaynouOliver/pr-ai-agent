@@ -1,8 +1,0 @@
-.env
-__pycache__/
-uv.lock
-README.md
-report.md
-.venv/
-tests/potpie/
-pr_review/knowledge/

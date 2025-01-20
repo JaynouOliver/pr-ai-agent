@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from celery.result import AsyncResult
-from models import PRRequest, TaskResponse, TaskStatusResponse, AnalysisTaskResponse, TaskStatus
+from models import PRRequest, TaskResponse, TaskStatusResponse, AnalysisTaskResponse, TaskStatus, AnalysisResult
 from tasks import analyze_pr_task, celery_app
 import json
 
@@ -54,14 +54,23 @@ async def get_results(task_id: str):
                 error=str(task.result)
             )
             
-        if task.successful():
-            return AnalysisTaskResponse(
-                task_id=task_id,
-                result=task.result # retrieving the data from Redis behind the scenes! 
+        if not task.ready():
+            raise HTTPException(
+                status_code=404,
+                detail="Task results not ready yet"
             )
             
-        # Task is still pending or processing
-        return AnalysisTaskResponse(task_id=task_id)
-        
+        result = task.result
+        if isinstance(result, str):
+            result = json.loads(result)
+            
+        # Convert the result to AnalysisResult
+        analysis_result = AnalysisResult(**result)
+            
+        return AnalysisTaskResponse(
+            task_id=task_id,
+            result=analysis_result
+        )
+            
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
